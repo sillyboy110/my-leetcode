@@ -1,0 +1,46 @@
+class Solution 
+{
+public:
+    void sortColors(vector<int>& nums) 
+    {
+        int pos=0;
+        int end=nums.size()-1;
+        int num=end;
+        int temp;
+        if(end==0)//no need to sort
+            return;
+        bool flag = true;//should continue or not
+        while(true)
+        {
+            while((pos<=num)&&(nums[pos]==0)&&(pos<end))//when red,continue
+                ++pos;
+            if(pos==end)
+                break;//all read have sorted
+            while((end>=0)&&(nums[end]!=0)&&(pos<end))//when not red ,continue
+                --end;
+            if(pos==end)
+                break;
+            nums[end]=nums[pos];
+            nums[pos]=0;
+            ++pos;
+            //--end;
+        }
+        end=num;
+        while(true)
+        {
+            while((pos<=num)&&(nums[pos]==1)&&(pos<end))//when white,continue
+                ++pos;
+            if(pos==end)
+                break;//all read have sorted
+            while((end>=0)&&(nums[end]!=1)&&(pos<end))//when not white ,continue
+                --end;
+            if(pos==end)
+                break;
+            nums[end]=nums[pos];
+            nums[pos]=1;
+            ++pos;
+            //--end;
+        }
+        
+    }
+};
