@@ -1,0 +1,48 @@
+class Solution 
+{
+public:
+    vector<vector<int>> generateMatrix(int n) 
+    {
+        int loop_turn = (n+1)/2;
+        bool flag = false;
+        vector<vector<int>>vt;
+        vector<int>temp(n,0);
+        if(n==0)
+            return vt;
+        if(n%2 ==1)
+            flag = true;
+        for(int i=0;i<n;++i)
+        {
+            vt.push_back(temp);
+        }
+        int pre=0;
+        for(int i = 0 ;i<loop_turn-1;++i)
+        {
+            
+             for(int j=i;j<n-i;++j)
+             {
+                 vt[i][j]=pre+(j-i)+1;
+                 vt[n-i-1][j]=pre+(n-i*2)*3-2-(j-i);
+             }
+             for(int j=i+1;j<n-i-1;++j)
+             {
+                 vt[j][i]=pre+4*(n-2*i-1)-(j-i-1);
+                 vt[j][n-i-1]=pre+(n-2*i)+(j-i);
+             }
+             pre +=4*(n-2*i-1);
+        }
+        int N_Two=n*n;
+        if(flag)
+        {
+            vt[loop_turn-1][loop_turn-1]=N_Two;
+        }
+        else
+        {
+            vt[loop_turn][loop_turn-1]=N_Two;
+            vt[loop_turn][loop_turn]=N_Two-1;
+            vt[loop_turn-1][loop_turn-1]=N_Two-3;
+            vt[loop_turn-1][loop_turn]=N_Two-2;
+        }
+        return vt;
+    }
+};
