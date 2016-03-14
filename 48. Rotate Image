@@ -1,0 +1,22 @@
+class Solution 
+{
+public:
+    void rotate(vector<vector<int>>& matrix) 
+    {
+        int temp;
+        int n=matrix.size();
+        for(int x=0;x<=n-1;++x)
+        {
+            if(x>=n-1-x)
+                return;
+            for(int y=x;y<n-1-x;++y)
+            {
+            temp=matrix[y][n-1-x];
+           matrix[y][n-1-x]=matrix[x][y];
+           matrix[x][y]= matrix[n-1-y][x];
+           matrix[n-1-y][x]=matrix[n-1-x][n-1-y];
+           matrix[n-1-x][n-1-y]=temp;
+            }
+        }
+    }
+};
