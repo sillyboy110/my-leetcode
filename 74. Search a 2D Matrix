@@ -1,0 +1,40 @@
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) 
+    {
+        int row_begin,col_begin,row_end,col_end;
+        int row = matrix.size();
+        if(row ==0)
+            return false;
+        int col = matrix[0].size();
+        row_begin=0;
+        row_end=row-1;
+        col_begin=0;
+        col_end=col-1;
+        int mid;
+        while(row_begin<row_end)
+        {
+            mid= (row_begin+row_end)/2;
+            if(matrix[mid][col-1]>target)
+                row_end=mid;
+            else if(matrix[mid][col-1]<target)
+                row_begin=mid+1;
+            else
+                return true;
+        }
+        //二分
+        while(col_begin<=col_end)
+        {
+            mid = (col_begin+col_end)/2;
+            if(matrix[row_end][mid]>target)
+                col_end=mid-1;
+            else if(matrix[row_end][mid]<target)
+                col_begin=mid+1;
+            else
+                return true;
+        }
+        return false;
+        
+        
+    }
+};
