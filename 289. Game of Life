@@ -1,0 +1,71 @@
+class Solution {
+public:
+    void gameOfLife(vector<vector<int>>& board) 
+    {
+        int row=board.size();
+        if(row==0)
+            return;
+        int col=board[0].size();
+        for(int i=0;i<row;++i)
+        {
+            for(int j=0;j<col;++j)
+            {
+                int live_neighbor=getLiveBoard(board,i,j);
+                if(board[i][j]&1)//now live
+                {
+                    if(live_neighbor<2||live_neighbor>3)
+                        board[i][j]=1;
+                    else
+                        board[i][j]=3;
+                }
+                else //now dead
+                {
+                    if(live_neighbor==3)
+                        board[i][j]=2;
+                    else
+                        board[i][j]=0;
+                }
+            }
+        }
+        for(int i=0;i<row;++i)
+        {
+            for(int j=0;j<col;++j)
+            {
+                if(board[i][j]&2)
+                    board[i][j]=1;
+                else
+                    board[i][j]=0;
+            }
+        }
+        
+    }
+    int getLiveBoard(vector<vector<int>>&board,int i,int j)//last bit is 1 means live ,or dead
+    {
+        //posible eight postion
+        /*
+        board[i-1][j],board[i+1][j]
+        board[i-1][j-1],board[i][j-1],board[i+1][j-1]
+        board[i-1][j+1],board[i][j+1],board[i+1][j+1]
+        */
+        int row=board.size();
+        int col=board[0].size();
+        int pos_x_min=i-1>0?(i-1):0;
+        int pos_x_max=(i+1)<=(row-1)?(i+1):(row-1);
+        int pos_y_min=(j-1)>0?(j-1):0;
+        int pos_y_max=(j+1)<=(col-1)?(j+1):(col-1);
+        int live_num=0;
+        
+        for(int x=pos_x_min;x<=pos_x_max;++x)
+        {
+            for(int y=pos_y_min;y<=pos_y_max;++y)
+            {
+                if(board[x][y]&1)
+                    ++live_num;
+            }
+        }
+        if(board[i][j]&1)
+            --live_num;
+        return live_num;
+        
+    }
+};
