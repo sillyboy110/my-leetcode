@@ -1,0 +1,94 @@
+class Solution 
+{
+public:
+    vector<int>result;
+    vector<int> diffWaysToCompute(string input) 
+    {
+		stack<char> Operation;
+		stack<int> Value;
+        Get_Result(input,0,Operation,Value);
+        return result;
+    }
+    void Get_Result(string input,int j,stack<char>Operation,stack<int>Value)
+    {
+		int i=j;
+		//首先进行解析，判断是数字，还是操作
+		if(input[i]=='+' || input[i]=='-'||input[i]=='*')
+		{
+			Operation.push(input[i]);
+			Get_Result(input,i+1,Operation,Value);
+		}
+		else//value,需要判断是否是最后一个操作数
+		{
+			//获取该操作数
+			int temp_val=0;
+			while(i<input.size()&&input[i]>=0x30&&input[i]<=0x39)
+			{
+				temp_val =temp_val*10+input[i]-0x30;
+				++i;
+			}
+			if(i== input.size())//最后一个操作数
+			{		
+				while(Operation.size()!=0)
+				{
+					char op = Operation.top();
+					Operation.pop(); 
+					int Value_one= Value.top();
+					Value.pop();
+					temp_val=Compute(op,Value_one,temp_val);
+				}
+				result.push_back(temp_val);
+				return;	
+			}
+			else if(Operation.size() !=0)
+            {
+				Value.push(temp_val);
+                Get_Result(input,i,Operation,Value);
+
+				Value.pop();//堆栈恢复
+
+				char op = Operation.top();
+				Operation.pop();
+				int value_one = Value.top();
+				Value.pop();
+				int temp = Compute(op,value_one,temp_val);
+				Value.push(temp);
+				Get_Result(input,i,Operation,Value);
+				while(Operation.size()!=0)
+				{
+					char op = Operation.top();
+					Operation.pop();
+					int value_two = Value.top();
+					Value.pop();
+					int value_one = Value.top();
+					Value.pop();
+					temp = Compute(op,value_one,value_two);
+					Value.push(temp);
+					Get_Result(input,i,Operation,Value);
+				}
+				
+            }
+            else
+            {
+                Value.push(temp_val);
+				Get_Result(input,i,Operation,Value);
+            }
+		}
+    }
+    int Compute(char op,int value_one,int value_two)
+    {
+        if(op == '+')
+        {
+            return value_one+value_two;
+        }
+        else if(op =='-')
+        {
+            return value_one-value_two;
+        }
+        else 
+        {
+            return value_one*value_two;
+        }
+        
+    }
+};
